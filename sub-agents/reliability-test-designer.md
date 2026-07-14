@@ -1,10 +1,10 @@
-# Sub-Agent 7/11 — reliability-test-designer
+# Sub-Agent 7/11 — rel-test-des
 
-> **This file is the SYSTEM-PROMPT SOURCE for the MiniMax Code subagent named `reliability-test-designer`.** Custom Subagents are Beta and are NOT auto-discovered from the filesystem. Create the subagent via **Settings → Subagents → New**, paste the `## Feld: Description` block into `Description`, paste the `## Feld: System prompt` body into `System prompt`, and set `Available tools` per the **Permission Table in `AGENTS.md`** (for this role: Read + Edit in own worktree + Bash for tests). See `INSTALLATION.md` Step 3 for the full per-role field mapping.
+> **This file is the SYSTEM-PROMPT SOURCE for the MiniMax Code subagent named `rel-test-des`.** Custom Subagents are Beta and are NOT auto-discovered from the filesystem. Create the subagent via **Settings → Subagents → New**, paste the `## Feld: Description` block into `Description`, paste the `## Feld: System prompt` body into `System prompt`, and set `Available tools` per the **Permission Table in `AGENTS.md`** (for this role: Read + Edit in own worktree + Bash for tests). See `INSTALLATION.md` Step 3 for the full per-role field mapping.
 
 ## Feld: Name
 ```
-reliability-test-designer
+rel-test-des
 ```
 
 ## Feld: Description

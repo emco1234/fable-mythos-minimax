@@ -144,11 +144,11 @@ The blocks below are **copy-paste-ready** — the `Description` and `System prom
 
 > **Beta limitation note.** This per-subagent UI step exists because MiniMax Code's Custom Subagents are still Beta and have no filesystem auto-discovery yet. If a later MiniMax Code release adds true auto-discovery of `~/.minimax/agents/*.md`, this section will shrink to a single `cp` command. Until then, UI creation is required for the agents to be loaded.
 
-### Subagent 1/11: mythos-singleshot-thinking-intelligence
+### Subagent 1/11: mythos-thinker
 
 **Name:**
 ```
-mythos-singleshot-thinking-intelligence
+mythos-thinker
 ```
 
 **Color:** yellow/orange
@@ -162,7 +162,7 @@ Optionaler read-only Thinking-Agent für Phase 0 (Parallel Single-Forward-Pass).
 
 **System prompt:**
 ````
-Du bist eine INSTANZ von mythos-singleshot-thinking-intelligence im Reliability Harness v2, optionale Phase 0.
+Du bist eine INSTANZ von mythos-thinker im Reliability Harness v2, optionale Phase 0.
 
 AUFGABE: Du führst EINE eigenständige Thinking-Analyse durch und lieferst einen THINKING-PASS-OUTPUT. Du produzierst KEIN Artefakt, KEINEN Code, KEINE finale Lösung — nur Hypothesen, Evidenz und den nächsten prüfbaren Schritt.
 
@@ -450,11 +450,11 @@ HARTE REGELN:
 
 ---
 
-### Subagent 6/11: reliability-scout
+### Subagent 6/11: rel-scout
 
 **Name:**
 ```
-reliability-scout
+rel-scout
 ```
 
 **Color:** cyan
@@ -519,11 +519,11 @@ HARTE REGELN:
 
 ---
 
-### Subagent 7/11: reliability-spec-critic
+### Subagent 7/11: rel-critic
 
 **Name:**
 ```
-reliability-spec-critic
+rel-critic
 ```
 
 **Color:** magenta
@@ -589,11 +589,11 @@ HARTE REGELN:
 
 ---
 
-### Subagent 8/11: reliability-test-designer
+### Subagent 8/11: rel-test-des
 
 **Name:**
 ```
-reliability-test-designer
+rel-test-des
 ```
 
 **Color:** orange
@@ -660,11 +660,11 @@ HARTE REGELN:
 
 ---
 
-### Subagent 9/11: reliability-lead
+### Subagent 9/11: rel-lead
 
 **Name:**
 ```
-reliability-lead
+rel-lead
 ```
 
 **Color:** green
@@ -732,11 +732,11 @@ Skill für Volltext: ~/.minimax/skills/fable-mythos-modus/SKILL.md
 
 ---
 
-### Subagent 10/11: reliability-verifier
+### Subagent 10/11: rel-verifier
 
 **Name:**
 ```
-reliability-verifier
+rel-verifier
 ```
 
 **Color:** blue
@@ -805,11 +805,11 @@ HARTE REGELN:
 
 ---
 
-### Subagent 11/11: reliability-adversary (only `risk_tier=critical`)
+### Subagent 11/11: rel-adversary (only `risk_tier=critical`)
 
 **Name:**
 ```
-reliability-adversary
+rel-adversary
 ```
 
 **Color:** dark red
@@ -873,17 +873,17 @@ The table below is a quick index. The authoritative, copy-paste-ready field valu
 
 | # | Name | Color (suggested) | Allowed tools (UI) |
 |---|---|---|---|
-| 1 | `mythos-singleshot-thinking-intelligence` | yellow/orange | Read, Grep, Glob (read-only) |
+| 1 | `mythos-thinker` | yellow/orange | Read, Grep, Glob (read-only) |
 | 2 | `mythos-executor` | blue | Read, Edit, Write, Bash |
 | 3 | `mythos-verifier` | green | Read, Bash (tests/build/lint only) |
 | 4 | `mythos-adversary` | red | Read, Bash (tests/fuzzing, isolated worktree) |
 | 5 | `mythos-synthesizer` | purple | Read, Grep, Glob (no Edit/Write/Bash) |
-| 6 | `reliability-scout` | cyan | Read, Grep, Glob (read-only) |
-| 7 | `reliability-spec-critic` | magenta | Read, Grep, Glob (read-only) |
-| 8 | `reliability-test-designer` | orange | Read, Edit (own worktree), Bash (tests) |
-| 9 | `reliability-lead` | green | Read, Edit, Write, Bash (own worktree) |
-| 10 | `reliability-verifier` | blue | Read, Bash (tests/build/lint, no Edit/Write) |
-| 11 | `reliability-adversary` (only `risk_tier=critical`) | dark red | Read, Bash (isolated worktree, tests/fuzzing) |
+| 6 | `rel-scout` | cyan | Read, Grep, Glob (read-only) |
+| 7 | `rel-critic` | magenta | Read, Grep, Glob (read-only) |
+| 8 | `rel-test-des` | orange | Read, Edit (own worktree), Bash (tests) |
+| 9 | `rel-lead` | green | Read, Edit, Write, Bash (own worktree) |
+| 10 | `rel-verifier` | blue | Read, Bash (tests/build/lint, no Edit/Write) |
+| 11 | `rel-adversary` (only `risk_tier=critical`) | dark red | Read, Bash (isolated worktree, tests/fuzzing) |
 
 ### Least-privilege notes
 
@@ -931,8 +931,8 @@ MiniMax Code Custom Subagents run in the **foreground** (blocking) — they are 
 |---|---|---|
 | **trivial** (typo, 1-line value change, comment) | Main agent alone | 0 |
 | **normal** (clear-scope bugfix, no architecture) | Main agent + 1 verifier on clean checkout | 1 |
-| **complex** (multi-file, API/schema, unclear spec) | 2 orthogonal read-only scouts parallel (`reliability-scout` + `reliability-spec-critic`) → `reliability-lead` with self-tests → `reliability-verifier` on clean checkout | ~4 |
-| **critical** (security-sensitive, concurrency, data-loss risk) | As complex + `reliability-adversary` + `reliability-test-designer` | ~6 |
+| **complex** (multi-file, API/schema, unclear spec) | 2 orthogonal read-only scouts parallel (`rel-scout` + `rel-critic`) → `rel-lead` with self-tests → `rel-verifier` on clean checkout | ~4 |
+| **critical** (security-sensitive, concurrency, data-loss risk) | As complex + `rel-adversary` + `rel-test-des` | ~6 |
 
 **No three identical thinking agents on every normal change.** Use orthogonal roles (scout/spec-critic/test-designer) instead of three MST clones.
 
@@ -955,7 +955,7 @@ For the investigation phase, prefer the **built-in read-only `explore` subagent*
 
 - Did you create the subagent via **Settings → Subagents → New** and click **Save**? (See Step 3.)
 - Did you fully restart MiniMax Code after saving all 11 subagents? (subagents created in the UI are indexed on the next startup)
-- Is the agent name in the UI field `Name` matching what the orchestrator references (e.g. `reliability-verifier`, `mythos-executor`)?
+- Is the agent name in the UI field `Name` matching what the orchestrator references (e.g. `rel-verifier`, `mythos-executor`)?
 
 ### "Agent file ... already exists" when creating a subagent in the UI
 

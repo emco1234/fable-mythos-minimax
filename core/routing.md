@@ -20,15 +20,15 @@ The main agent reads the task, the task contract, and the repository state, then
 | `risk_tier` | Phase 0 Investigation | Phase 3 Implementation | Phase 4 Verification | Adversary | Sub-agent count |
 |---|---|---|---|---|---|
 | **trivial** | none (main agent reads file) | main agent | none | none | 0 |
-| **normal** | built-in `explore` subagent if needed | main agent with self-tests | 1 `reliability-verifier` on clean checkout | none | 1 |
-| **complex** | `reliability-scout` + `reliability-spec-critic` + `reliability-test-designer` parallel (read-only; test-designer in its own worktree); optionally built-in `explore` | `reliability-lead` with mandatory self-tests | `reliability-verifier` on clean checkout | none | ~4 |
-| **critical** | Same as complex | `reliability-lead` with self-tests | `reliability-verifier` on clean checkout | `reliability-adversary` in isolated worktree | ~6 |
+| **normal** | built-in `explore` subagent if needed | main agent with self-tests | 1 `rel-verifier` on clean checkout | none | 1 |
+| **complex** | `rel-scout` + `rel-critic` + `rel-test-des` parallel (read-only; test-designer in its own worktree); optionally built-in `explore` | `rel-lead` with mandatory self-tests | `rel-verifier` on clean checkout | none | ~4 |
+| **critical** | Same as complex | `rel-lead` with self-tests | `rel-verifier` on clean checkout | `rel-adversary` in isolated worktree | ~6 |
 
-> **`reliability-test-designer` placement:** it is a Phase 0 scout (it designs reproduction + regression + edge cases *before* the lead implements, producing fail-before/pass-after evidence in its own worktree). It runs at `complex` and `critical`, parallel to `reliability-scout` and `reliability-spec-critic`. It is **not** a Phase 4 verifier. This matches Rule 1 (the three orthogonal Phase 0 roles are codebase / spec / verification-design) and is consistent with `AGENTS.md` and `README.md`.
+> **`rel-test-des` placement:** it is a Phase 0 scout (it designs reproduction + regression + edge cases *before* the lead implements, producing fail-before/pass-after evidence in its own worktree). It runs at `complex` and `critical`, parallel to `rel-scout` and `rel-critic`. It is **not** a Phase 4 verifier. This matches Rule 1 (the three orthogonal Phase 0 roles are codebase / spec / verification-design) and is consistent with `AGENTS.md` and `README.md`.
 
 ## Rules
 
-1. **No three identical thinking agents.** Three MST clones with same model + same prompt + same context produce stylistic variants of the same assumption. Use orthogonal roles instead: codebase (`reliability-scout`), spec (`reliability-spec-critic`), verification (`reliability-test-designer`).
+1. **No three identical thinking agents.** Three MST clones with same model + same prompt + same context produce stylistic variants of the same assumption. Use orthogonal roles instead: codebase (`rel-scout`), spec (`rel-critic`), verification (`rel-test-des`).
 2. **Prefer the built-in `explore` subagent** for architecture/call-chain/file-search investigation. It is purpose-built and cheaper than a freely-formulating thinking agent.
 3. **Self-tests are mandatory at `normal` and above.** The implementer never delegates all verification.
 4. **Clean-checkout verification is mandatory at `normal` and above.** The verifier creates a fresh worktree from `base_commit`, applies the frozen patch, and re-runs the 9-point check. Verification on a dirty/shared worktree is invalid.

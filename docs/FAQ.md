@@ -54,7 +54,7 @@ description: ...
 
 ### Can I use this without sub-agents (just the skill)?
 
-**Partially.** The skill alone applies the Mythos-inspired reasoning patterns to your main agent. But the harness's clean-checkout verification requires the `reliability-verifier` (or legacy `mythos-verifier`) sub-agent. Without verifiers you get the reasoning depth but not the independent verification.
+**Partially.** The skill alone applies the Mythos-inspired reasoning patterns to your main agent. But the harness's clean-checkout verification requires the `rel-verifier` (or legacy `mythos-verifier`) sub-agent. Without verifiers you get the reasoning depth but not the independent verification.
 
 ### I'm on macOS/Linux — do the paths work?
 

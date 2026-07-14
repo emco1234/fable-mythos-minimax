@@ -85,9 +85,9 @@ FINALE ANTWORT: klar, kalibriert, strategisch intelligent, alignment-getreu
 
 **Bessere Rollen als 3 identische MST-Klone** (orthogonal statt redundant):
 
-1. **reliability-scout** — Codebasis, Call-Graph, Konventionen, vorhandene Tests (read-only)
-2. **reliability-spec-critic** — Acceptance Contract, Ambiguitäten, Scope (read-only)
-3. **reliability-test-designer** — Repro, Regression, Edge Cases, fail-before/pass-after (eigener worktree)
+1. **rel-scout** — Codebasis, Call-Graph, Konventionen, vorhandene Tests (read-only)
+2. **rel-critic** — Acceptance Contract, Ambiguitäten, Scope (read-only)
+3. **rel-test-des** — Repro, Regression, Edge Cases, fail-before/pass-after (eigener worktree)
 
 Diese drei liefern echte Diversität: Codebasis, Spezifikation und Verifikation. Drei identische MST-Instanzen mit gleichem Prompt/Kontext erzeugen meist drei stilistische Varianten derselben Annahme.
 

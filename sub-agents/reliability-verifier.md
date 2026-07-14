@@ -1,10 +1,10 @@
-# Sub-Agent 9/11 — reliability-verifier
+# Sub-Agent 9/11 — rel-verifier
 
-> **This file is the SYSTEM-PROMPT SOURCE for the MiniMax Code subagent named `reliability-verifier`.** Custom Subagents are Beta and are NOT auto-discovered from the filesystem. Create the subagent via **Settings → Subagents → New**, paste the `## Feld: Description` block into `Description`, paste the `## Feld: System prompt` body into `System prompt`, and set `Available tools` per the **Permission Table in `AGENTS.md`** (for this role: Read + Bash for tests/build/lint — no Edit/Write). See `INSTALLATION.md` Step 3 for the full per-role field mapping.
+> **This file is the SYSTEM-PROMPT SOURCE for the MiniMax Code subagent named `rel-verifier`.** Custom Subagents are Beta and are NOT auto-discovered from the filesystem. Create the subagent via **Settings → Subagents → New**, paste the `## Feld: Description` block into `Description`, paste the `## Feld: System prompt` body into `System prompt`, and set `Available tools` per the **Permission Table in `AGENTS.md`** (for this role: Read + Bash for tests/build/lint — no Edit/Write). See `INSTALLATION.md` Step 3 for the full per-role field mapping.
 
 ## Feld: Name
 ```
-reliability-verifier
+rel-verifier
 ```
 
 ## Feld: Description

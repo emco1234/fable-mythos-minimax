@@ -1,10 +1,10 @@
-# Sub-Agent 10/11 — reliability-adversary
+# Sub-Agent 10/11 — rel-adversary
 
-> **This file is the SYSTEM-PROMPT SOURCE for the MiniMax Code subagent named `reliability-adversary`.** Custom Subagents are Beta and are NOT auto-discovered from the filesystem. Create the subagent via **Settings → Subagents → New**, paste the `## Feld: Description` block into `Description`, paste the `## Feld: System prompt` body into `System prompt`, and set `Available tools` per the **Permission Table in `AGENTS.md`** (for this role: Read + Bash for tests/fuzzing in an isolated worktree — no Edit/Write on main code). See `INSTALLATION.md` Step 3 for the full per-role field mapping.
+> **This file is the SYSTEM-PROMPT SOURCE for the MiniMax Code subagent named `rel-adversary`.** Custom Subagents are Beta and are NOT auto-discovered from the filesystem. Create the subagent via **Settings → Subagents → New**, paste the `## Feld: Description` block into `Description`, paste the `## Feld: System prompt` body into `System prompt`, and set `Available tools` per the **Permission Table in `AGENTS.md`** (for this role: Read + Bash for tests/fuzzing in an isolated worktree — no Edit/Write on main code). See `INSTALLATION.md` Step 3 for the full per-role field mapping.
 
 ## Feld: Name
 ```
-reliability-adversary
+rel-adversary
 ```
 
 ## Feld: Description

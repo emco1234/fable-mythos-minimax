@@ -1,10 +1,10 @@
-# Sub-Agent 8/11 — reliability-lead
+# Sub-Agent 8/11 — rel-lead
 
-> **This file is the SYSTEM-PROMPT SOURCE for the MiniMax Code subagent named `reliability-lead`.** Custom Subagents are Beta and are NOT auto-discovered from the filesystem. Create the subagent via **Settings → Subagents → New**, paste the `## Feld: Description` block into `Description`, paste the `## Feld: System prompt` body into `System prompt`, and set `Available tools` per the **Permission Table in `AGENTS.md`** (for this role: Read, Edit, Write, Bash — own worktree). See `INSTALLATION.md` Step 3 for the full per-role field mapping.
+> **This file is the SYSTEM-PROMPT SOURCE for the MiniMax Code subagent named `rel-lead`.** Custom Subagents are Beta and are NOT auto-discovered from the filesystem. Create the subagent via **Settings → Subagents → New**, paste the `## Feld: Description` block into `Description`, paste the `## Feld: System prompt` body into `System prompt`, and set `Available tools` per the **Permission Table in `AGENTS.md`** (for this role: Read, Edit, Write, Bash — own worktree). See `INSTALLATION.md` Step 3 for the full per-role field mapping.
 
 ## Feld: Name
 ```
-reliability-lead
+rel-lead
 ```
 
 ## Feld: Description

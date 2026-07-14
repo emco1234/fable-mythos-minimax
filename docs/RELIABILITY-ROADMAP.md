@@ -33,7 +33,7 @@ Everything else may be summarized. The Mythos System Card documents a case where
 ### 4. Async subagents (when the platform allows)
 
 MiniMax Code Custom Subagents currently run in the foreground (blocking). The dynamic routing table in `core/routing.md` is designed for that model. When MiniMax Code adds async subagents:
-- parallelize the two read-only scouts (`reliability-scout` + `reliability-spec-critic`),
+- parallelize the two read-only scouts (`rel-scout` + `rel-critic`),
 - run the test-designer concurrently with the lead's first implementation pass,
 - run the adversary concurrently with the verifier on critical tasks.
 
@@ -66,7 +66,7 @@ Each module auto-discovers the relevant commands from the repo (CI config, `pack
 
 ### 1. Property-based testing
 
-Where invariants are expressible (parsers, state machines, algebraic identities), add PBT. Tooling: `hypothesis` (Python), `fast-check` (TS/JS), `proptest` (Rust), `go-quickcheck` (Go). The `reliability-test-designer` writes property tests as part of its regression suite.
+Where invariants are expressible (parsers, state machines, algebraic identities), add PBT. Tooling: `hypothesis` (Python), `fast-check` (TS/JS), `proptest` (Rust), `go-quickcheck` (Go). The `rel-test-des` writes property tests as part of its regression suite.
 
 ### 2. Fuzzing and sanitizers
 
@@ -77,7 +77,7 @@ For security-sensitive or input-parsing code:
 - Python: `atheris` + `python -X dev`.
 - JS/TS: `jsfuzz` / `fast-check` property-mode.
 
-The `reliability-adversary` (critical tier) invokes the relevant fuzzer on the patched code in its isolated worktree.
+The `rel-adversary` (critical tier) invokes the relevant fuzzer on the patched code in its isolated worktree.
 
 ### 3. Mutation testing for critical logic
 

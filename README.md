@@ -103,17 +103,17 @@ See [`core/routing.md`](./core/routing.md) for the full rules.
 
 | Agent | Tools | Role |
 |---|---|---|
-| `0-mythos-singleshot-thinking-intelligence` | read/grep/glob | Optional read-only thinking pass |
+| `0-mythos-thinker` | read/grep/glob | Optional read-only thinking pass |
 | `1-mythos-executor` | read/edit/write/bash | Implementer with mandatory self-tests |
 | `2-mythos-verifier` | read + bash (tests/build/lint only) | Clean-checkout verifier, no edit/write |
 | `3-mythos-adversary` | read + bash (tests/fuzzing, isolated worktree) | Red-team, only at `risk_tier=critical` |
 | `4-mythos-synthesizer` | read/grep/glob (no edit/write/bash) | Aggregator — does NOT have the final word; the machine done-gate does |
-| `reliability-scout` | read/grep/glob | Codebase, call-graph, conventions, existing tests |
-| `reliability-spec-critic` | read/grep/glob | Acceptance contract, ambiguities, scope |
-| `reliability-test-designer` | read + edit (own worktree) + tests | Repro, regression, edge cases, fail-before/pass-after |
-| `reliability-lead` | read/edit/write/bash (own worktree) | Implementation + self-tests |
-| `reliability-verifier` | read + bash (tests/build/lint, no edit/write) | Clean-checkout 9-point check |
-| `reliability-adversary` (only `risk_tier=critical`) | read + bash (isolated worktree, tests/fuzzing) | Fuzzing, race/security hunting |
+| `rel-scout` | read/grep/glob | Codebase, call-graph, conventions, existing tests |
+| `rel-critic` | read/grep/glob | Acceptance contract, ambiguities, scope |
+| `rel-test-des` | read + edit (own worktree) + tests | Repro, regression, edge cases, fail-before/pass-after |
+| `rel-lead` | read/edit/write/bash (own worktree) | Implementation + self-tests |
+| `rel-verifier` | read + bash (tests/build/lint, no edit/write) | Clean-checkout 9-point check |
+| `rel-adversary` (only `risk_tier=critical`) | read + bash (isolated worktree, tests/fuzzing) | Fuzzing, race/security hunting |
 
 No agent gets "Default all permissions". The verifier, adversary, and synthesizer never get `edit`/`write`. MiniMax Code Custom Subagents are Beta; permissions are declared as descriptive tool restrictions in the frontmatter and system-prompt body.
 
@@ -189,17 +189,17 @@ fable-mythos-minimax/
 ├── fable-mythos-modus/
 │   └── SKILL.md                       ← Behavioral priming skill
 ├── sub-agents/                        ← 5 legacy + 6 new orthogonal agents
-│   ├── 0-mythos-singleshot-thinking-intelligence.md
+│   ├── 0-mythos-thinker.md
 │   ├── 1-mythos-executor.md
 │   ├── 2-mythos-verifier.md
 │   ├── 3-mythos-adversary.md
 │   ├── 4-mythos-synthesizer.md
-│   ├── reliability-scout.md
-│   ├── reliability-spec-critic.md
-│   ├── reliability-test-designer.md
-│   ├── reliability-lead.md
-│   ├── reliability-verifier.md
-│   └── reliability-adversary.md
+│   ├── rel-scout.md
+│   ├── rel-critic.md
+│   ├── rel-test-des.md
+│   ├── rel-lead.md
+│   ├── rel-verifier.md
+│   └── rel-adversary.md
 ├── core/                              ← Reliability harness core
 │   ├── runtime-rules.md               ← Compact 14-point runtime core
 │   ├── task-contract.schema.json      ← JSON Schema draft-07 for task contracts

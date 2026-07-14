@@ -41,21 +41,21 @@ MiniMax Code Custom Subagents sind Beta und MÜSSEN über **Settings → Subagen
 
 | Agent | Lesen | Editieren | Bash/Tests | Netzwerk |
 |---|:---:|:---:|:---:|:---:|
-| `0-mythos-singleshot-thinking-intelligence` | Ja (read/grep/glob) | Nein | Nein | Nein |
+| `0-mythos-thinker` | Ja (read/grep/glob) | Nein | Nein | Nein |
 | `1-mythos-executor` (Lead) | Ja | Ja (Edit/Write) | Ja (Bash, projektspezifisch) | Nur wenn nötig |
 | `2-mythos-verifier` | Ja | **Nein** | Nur Tests/Build/Lint | Nein |
 | `3-mythos-adversary` | Ja | Nur isolierte Testartefakte | Nur Tests/Fuzzing | Nein |
 | `4-mythos-synthesizer` | Ja (read/grep/glob) | **Nein** | **Nein** | Nein |
-| `reliability-scout` | Ja (read/grep/glob) | Nein | Nein | Nein |
-| `reliability-spec-critic` | Ja (read/grep/glob) | Nein | Nein | Nein |
-| `reliability-test-designer` | Ja | Nur eigener Worktree | Tests | Nein |
-| `reliability-lead` | Ja | Ja | projektspezifisch | Nur wenn nötig |
-| `reliability-verifier` | Ja | Nein | Tests/Build/Lint | Nein |
-| `reliability-adversary` (nur bei `risk_tier=critical`) | Ja | Nur isolierte Worktree-Artefakte | Tests/Fuzzing | Nein |
+| `rel-scout` | Ja (read/grep/glob) | Nein | Nein | Nein |
+| `rel-critic` | Ja (read/grep/glob) | Nein | Nein | Nein |
+| `rel-test-des` | Ja | Nur eigener Worktree | Tests | Nein |
+| `rel-lead` | Ja | Ja | projektspezifisch | Nur wenn nötig |
+| `rel-verifier` | Ja | Nein | Tests/Build/Lint | Nein |
+| `rel-adversary` (nur bei `risk_tier=critical`) | Ja | Nur isolierte Worktree-Artefakte | Tests/Fuzzing | Nein |
 
 ## Executor-Standard (Selbstverifikation verpflichtend)
 
-Der `1-mythos-executor` bzw. `reliability-lead` MUSS selbst testen — "Executor bewertet nicht die eigene Arbeit" ist aufgehoben. Standard-Ablauf:
+Der `1-mythos-executor` bzw. `rel-lead` MUSS selbst testen — "Executor bewertet nicht die eigene Arbeit" ist aufgehoben. Standard-Ablauf:
 
 1. **Bug reproduzieren.**
 2. **Baseline speichern** (Tests/Build/Lint vor der Änderung, bereits vorhandene Fehler dokumentieren).
@@ -89,8 +89,8 @@ MAP feuert NICHT starr auf jeder nicht-trivialen Änderung. Stattdessen routet d
 
 - **trivial** (Tippfehler, 1-Zeilen-Wert-Änderung, Kommentar): Hauptagent allein. Kein Subagent.
 - **normal** (Bugfix mit klarem Scope, keine Architektur): Hauptagent + 1 Verifier auf clean checkout.
-- **complex** (Multi-File, API/Schema, unklare Spec): 3 orthogonale read-only Scouts parallel (`reliability-scout` + `reliability-spec-critic` + `reliability-test-designer` im eigenen Worktree) → `reliability-lead` mit Selbsttests → `reliability-verifier` auf clean checkout.
-- **critical** (`risk_tier=critical`: Security-sensitive, Concurrency, Datenverlust-Risiko): wie complex + `reliability-adversary` im isolierten Worktree.
+- **complex** (Multi-File, API/Schema, unklare Spec): 3 orthogonale read-only Scouts parallel (`rel-scout` + `rel-critic` + `rel-test-des` im eigenen Worktree) → `rel-lead` mit Selbsttests → `rel-verifier` auf clean checkout.
+- **critical** (`risk_tier=critical`: Security-sensitive, Concurrency, Datenverlust-Risiko): wie complex + `rel-adversary` im isolierten Worktree.
 
 Keine 3 identischen Thinking-Agenten auf jeder normalen Änderung — das erzeugt korrelierte Scheinerklärungen statt echter Diversität.
 
@@ -98,7 +98,7 @@ Keine 3 identischen Thinking-Agenten auf jeder normalen Änderung — das erzeug
 
 Legacy (MAP-kompatibel, für Aufwärtskompatibilität):
 
-- `0-mythos-singleshot-thinking-intelligence` — read-only Thinking, optional
+- `0-mythos-thinker` — read-only Thinking, optional
 - `1-mythos-executor` — Implementierer mit Selbstverifikation
 - `2-mythos-verifier` — Clean-Checkout-Verifier
 - `3-mythos-adversary` — Red-Team, nur bei `risk_tier=critical`
@@ -106,12 +106,12 @@ Legacy (MAP-kompatibel, für Aufwärtskompatibilität):
 
 Neue orthogonale Reliability-Agents:
 
-- `reliability-scout` — Codebasis, Call-Graph, Konventionen, vorhandene Tests (read-only)
-- `reliability-spec-critic` — Acceptance Contract, Ambiguitäten, Scope (read-only)
-- `reliability-test-designer` — Repro, Regression, Edge Cases, fail-before/pass-after (eigener worktree)
-- `reliability-lead` — Implementierung + Selbsttests (write im eigenen worktree)
-- `reliability-verifier` — Clean-Checkout-Verifier, 9-Punkt-Check (read + kontrollierte Testbefehle)
-- `reliability-adversary` — Fuzzing, Race/Security, NUR bei `risk_tier=critical` (isolierter worktree)
+- `rel-scout` — Codebasis, Call-Graph, Konventionen, vorhandene Tests (read-only)
+- `rel-critic` — Acceptance Contract, Ambiguitäten, Scope (read-only)
+- `rel-test-des` — Repro, Regression, Edge Cases, fail-before/pass-after (eigener worktree)
+- `rel-lead` — Implementierung + Selbsttests (write im eigenen worktree)
+- `rel-verifier` — Clean-Checkout-Verifier, 9-Punkt-Check (read + kontrollierte Testbefehle)
+- `rel-adversary` — Fuzzing, Race/Security, NUR bei `risk_tier=critical` (isolierter worktree)
 
 Für die Untersuchungsphase empfiehlt sich außerdem der eingebaute read-only `explore`-Subagent von MiniMax Code (Architekturermittlung, Call-Chain-Mapping, Dateisuche, Abhängigkeitsanalyse) statt eines frei formulierenden Thinking-Agenten.
 
