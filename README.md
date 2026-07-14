@@ -163,34 +163,45 @@ mkdir -p ~/.minimax/skills/fable-mythos-modus
 cp fable-mythos-modus/SKILL.md ~/.minimax/skills/fable-mythos-modus/SKILL.md
 ```
 
-### Step 3 — Deploy sub-agents via direct-to-disk drop
+### Step 3 — Deploy sub-agents via the Mavis daemon HTTP API
 
 The MiniMax Code UI's "Settings → Subagents → New" form caps `description` at
-100 chars and exposes no system-prompt field. That's a UI limitation, not a
-Mavis limitation — Mavis itself loads Custom Subagents from
-`<dataDir>/agents/<name>/agent.md` (see the built-in `create-agent` skill).
+100 chars and exposes no system-prompt field. That's a pure UI limitation —
+the underlying daemon accepts arbitrary-length `systemPrompt` and `description`
+via its Thrift-gen HTTP endpoint.
 
-The `install.sh` script drops all 11 sub-agents directly:
+The `install.sh` script POSTs all 11 sub-agents directly to that endpoint:
 
 ```bash
-bash install.sh   # installs to ~/.mavis/agents/ (default) which on your
-                 # machine symlinks to ~/.minimax/agents/. Override the
-                 # destination with MAVIS_DATA_DIR=/path bash install.sh.
+bash install.sh   # auto-discovers the daemon port from ~/.minimax/logs/
+                 # and reads the bearer token from ~/.minimax/local-runtime.auth.json
 ```
 
-For each agent it writes:
+For each agent the installer sends one request:
 
-- `agent.md` — YAML frontmatter (`name: <short-name>` + `description: >- …`)
-  followed by the full Markdown system-prompt body (no length cap).
-- `config.yaml` — `{}` (uses the platform default model; edit to pin one).
+```json
+POST http://127.0.0.1:<PORT>/minimax-desktop/api/v1/agent
+{
+  "name":         "rel-lead",
+  "displayName":  "rel-lead",
+  "description":  "Lead-Engineer für complex/critical-Tasks...",
+  "systemPrompt": "<full multi-KB prompt>"
+}
+```
 
-Then **restart MiniMax Code** so Mavis rescans the agents directory. All 11
-agents will appear in the Sub-Agent list alongside the four built-ins
-(`coder`, `general`, `mavis`, `verifier`).
+After the 11 POSTs the installer reads back the `agents` SQLite table and
+prints the new rows for visual confirmation. No restart is required —
+the agents become available immediately.
+
+**Fallback**: `bash install.sh --disk` writes the files directly to
+`<dataDir>/agents/<name>/agent.md`. The daemon only re-reads them on next
+boot, so this path requires a MiniMax Code restart.
 
 ### Step 4 — Restart MiniMax Code
 
-Skills and sub-agents are indexed at startup. After creating all 11 subagents in the UI and restarting, the harness is fully active.
+If you used the default HTTP path, no restart is needed — the daemon has
+already registered the agents. If you used `--disk`, restart MiniMax Code
+so Mavis rescans the agents directory.
 
 📖 **Full step-by-step guide:** see [`INSTALLATION.md`](./INSTALLATION.md).
 
@@ -295,8 +306,8 @@ Verifier, adversary, and synthesizer do not need edit/write access — and givin
 
 Three things to check:
 1. Is `AGENTS.md` at `~/.minimax/AGENTS.md` (user-level)?
-2. Did `bash install.sh` run successfully? Confirm with `ls ~/.minimax/agents/` — should show `coder general mavis verifier` plus the 11 new short-named dirs (e.g. `mythos-executor`, `rel-verifier`).
-3. Did you restart MiniMax Code after `install.sh`?
+2. Did `bash install.sh` run successfully? Confirm with `python scripts/verify_live_load.py after` — should print `delta >= 11` if all 11 agents were registered.
+3. If you used `--disk`, did you restart MiniMax Code?
 
 Full troubleshooting: [`INSTALLATION.md`](./INSTALLATION.md#troubleshooting).
 
