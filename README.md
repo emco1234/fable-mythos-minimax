@@ -163,11 +163,30 @@ mkdir -p ~/.minimax/skills/fable-mythos-modus
 cp fable-mythos-modus/SKILL.md ~/.minimax/skills/fable-mythos-modus/SKILL.md
 ```
 
-### Step 3 — Create sub-agents via the MiniMax Code UI (Beta)
+### Step 3 — Deploy sub-agents via direct-to-disk drop
 
-Custom Subagents are a **Beta** feature. You **must** create each of the 11 subagents via **Settings → Subagents → New** in the MiniMax Code TUI. MiniMax Code writes the subagent to `~/.minimax/agents/<name>.md` when you save; it only indexes subagents created through the UI, so **manually copying `.md` files is not sufficient.**
+The MiniMax Code UI's "Settings → Subagents → New" form caps `description` at
+100 chars and exposes no system-prompt field. That's a UI limitation, not a
+Mavis limitation — Mavis itself loads Custom Subagents from
+`<dataDir>/agents/<name>/agent.md` (see the built-in `create-agent` skill).
 
-For each subagent: open `sub-agents/<name>.md` in this repo, paste the `## Feld: Description` block into the UI `Description`, paste the `## Feld: System prompt` block into `System prompt`, and set `Available tools` per the Permission Table in `AGENTS.md`. Full per-role field values: see [`INSTALLATION.md`](./INSTALLATION.md) Step 3.
+The `install.sh` script drops all 11 sub-agents directly:
+
+```bash
+bash install.sh   # installs to ~/.mavis/agents/ (default) which on your
+                 # machine symlinks to ~/.minimax/agents/. Override the
+                 # destination with MAVIS_DATA_DIR=/path bash install.sh.
+```
+
+For each agent it writes:
+
+- `agent.md` — YAML frontmatter (`name: <short-name>` + `description: >- …`)
+  followed by the full Markdown system-prompt body (no length cap).
+- `config.yaml` — `{}` (uses the platform default model; edit to pin one).
+
+Then **restart MiniMax Code** so Mavis rescans the agents directory. All 11
+agents will appear in the Sub-Agent list alongside the four built-ins
+(`coder`, `general`, `mavis`, `verifier`).
 
 ### Step 4 — Restart MiniMax Code
 
@@ -276,8 +295,8 @@ Verifier, adversary, and synthesizer do not need edit/write access — and givin
 
 Three things to check:
 1. Is `AGENTS.md` at `~/.minimax/AGENTS.md` (user-level)?
-2. Did you create all 11 subagents via **Settings → Subagents → New** and click Save? (MiniMax Code only indexes UI-created subagents — copying `.md` files into `~/.minimax/agents/` is not sufficient while the feature is in Beta.)
-3. Did you restart MiniMax Code after creating the subagents?
+2. Did `bash install.sh` run successfully? Confirm with `ls ~/.minimax/agents/` — should show `coder general mavis verifier` plus the 11 new short-named dirs (e.g. `mythos-executor`, `rel-verifier`).
+3. Did you restart MiniMax Code after `install.sh`?
 
 Full troubleshooting: [`INSTALLATION.md`](./INSTALLATION.md#troubleshooting).
 
