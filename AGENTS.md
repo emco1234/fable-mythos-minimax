@@ -37,7 +37,7 @@ Keine privaten Chain-of-Thought ausgeben. Gib prägnante Entscheidungen, geände
 
 ## Sub-Agent-Permission-Tabelle (Least Privilege)
 
-MiniMax Code Custom Subagents sind Beta und MÜSSEN über **Settings → Subagents → New** im MiniMax Code-TUI angelegt werden (ein einfaches Kopieren von `.md`-Dateien nach `~/.minimax/agents/` wird NICHT indiziert). Beim Anlegen jedes Subagents setzt das Feld **Available tools** die untenstehenden Berechtigungen um — diese Tabelle ist die maßgebliche Referenz für das UI-Feld. Die `sub-agents/*.md`-Dateien in diesem Repo sind die System-Prompt-Quelle für das UI-Feld `System prompt`, siehe `INSTALLATION.md` Step 3.
+MiniMax Code Custom Subagents are Beta. The UI's "Settings → Subagents → New" form caps `description` at 100 chars and exposes no system-prompt field — that's a UI limitation, not a Mavis limitation. Mavis itself loads Custom Subagents from `<dataDir>/agents/<name>/agent.md` (see the built-in `create-agent` SKILL), with the Markdown body as the system prompt (no length cap). The 11 sub-agents in this repo are deployed via direct-to-disk drop by `install.sh` (see `INSTALLATION.md` Step 3). The `sub-agents/*.md`-Datei in diesem Repo sind die Source-of-Truth für Name + Description + System Prompt, aus denen `scripts/deploy_subagents.py` je ein `agent.md` mit YAML-Frontmatter erzeugt. Die Permission-Tabelle unten bleibt die Referenz für das UI-Feld `Available tools` — bei einer Modell-Pin pro Agent siehe `config.yaml`.
 
 | Agent | Lesen | Editieren | Bash/Tests | Netzwerk |
 |---|:---:|:---:|:---:|:---:|

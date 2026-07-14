@@ -21,11 +21,21 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC="$SCRIPT_DIR/sub-agents"
+# Default to ~/.mavis/agents/ which on Windows is a symlink to ~/.minimax/agents/.
+# This is the Mavis convention (see built-in create-agent SKILL: <dataDir>/agents/<name>/).
+# Override with `MAVIS_DATA_DIR=/path bash install.sh`.
 DST="${MAVIS_DATA_DIR:-$HOME/.mavis}/agents"
 
-# mavis root may be a symlink (e.g. ~/.mavis -> ~/.minimax), resolve
-# (no readlink -f on Git-Bash; rely on Python's os.path.realpath after we have
-# located Python — but here we just resolve what we can with bash semantics)
+# Resolve symlinks (e.g. on Windows where ~/.mavis -> ~/.minimax) so writes go to
+# the real on-disk location. Falls back to un-resolved path if Python is not yet
+# available; the deploy script later re-resolves when invoked.
+if command -v python >/dev/null 2>&1; then
+  RESOLVED="$(python -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$DST" 2>/dev/null || echo "$DST")"
+  if [[ -n "$RESOLVED" ]]; then DST="$RESOLVED"; fi
+elif command -v python3 >/dev/null 2>&1; then
+  RESOLVED="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$DST" 2>/dev/null || echo "$DST")"
+  if [[ -n "$RESOLVED" ]]; then DST="$RESOLVED"; fi
+fi
 
 DRY_RUN=0
 UNINSTALL=0
